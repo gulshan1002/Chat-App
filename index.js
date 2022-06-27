@@ -1,3 +1,4 @@
+const { Socket } = require("dgram");
 const express = require("express");
 const http = require("http");
 const socketio = require("socket.io");
@@ -9,9 +10,18 @@ const io = socketio(server);
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
-io.on("connection", ()=>
+let count=0;
+
+io.on("connection", (socket)=>
 {
     console.log("New websocket Connection!");
+    socket.emit("countUpdate",count);
+    socket.on("increment",()=>
+    {
+        count++;
+        //socket.emit("countUpdate",count);
+        io.emit("countUpdate",count);
+    });
 });
 
 app.get("/", function(req, res)
