@@ -1,10 +1,23 @@
 const socket = io();
-socket.on("countUpdate",(count)=>
+
+socket.on("message",(message)=>
 {
-    console.log("Count has been updated successfully!",count);
+    document.querySelector("h1").innerHTML = message;
 });
-document.getElementById("increment").addEventListener("click", ()=>
+
+document.querySelector("form").addEventListener("submit", (e)=>
 {
-    console.log("clicked!");
-    socket.emit("increment");
+    e.preventDefault();
+    const message = document.querySelector("input").value;
+    socket.emit("sendMessage", message);
 });
+
+// socket.on("countUpdate",(count)=>
+// {
+//     console.log("Count has been updated successfully!",count);
+// });
+// document.getElementById("increment").addEventListener("click", ()=>
+// {
+//     console.log("clicked!");
+//     socket.emit("increment");
+// });

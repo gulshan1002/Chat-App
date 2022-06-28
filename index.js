@@ -9,25 +9,36 @@ const io = socketio(server);
 
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: true }));
 
 let count=0;
 
 io.on("connection", (socket)=>
 {
     console.log("New websocket Connection!");
-    socket.emit("countUpdate",count);
-    socket.on("increment",()=>
+    socket.emit("message","Welcome!");
+
+    socket.on("sendMessage", (data)=>
     {
-        count++;
-        //socket.emit("countUpdate",count);
-        io.emit("countUpdate",count);
+        //console.log(data);
+        io.emit("message", data);
     });
+
+    // socket.emit("countUpdate",count);
+    // socket.on("increment",()=>
+    // {
+    //     count++;
+    //     //socket.emit("countUpdate",count);
+    //     io.emit("countUpdate",count);
+    // });
 });
 
 app.get("/", function(req, res)
 {
     res.render("chat");
 });
+
+
 
 server.listen(3000, function(err)
 {
