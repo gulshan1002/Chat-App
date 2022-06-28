@@ -11,7 +11,18 @@ document.querySelector("form").addEventListener("submit", (e)=>
     const message = document.querySelector("input").value;
     socket.emit("sendMessage", message);
 });
-
+document.querySelector("#sendLocation").addEventListener("click",(e)=>
+{
+    if(!navigator.geolocation)
+    {
+        return alert('Geolocation is not supported by yur browser!');
+    }
+    navigator.geolocation.getCurrentPosition((position)=>
+    {
+        console.log(position);
+        socket.emit("sendLocation",{latitude:position.coords.latitude,longitude:position.coords.longitude});
+    });
+}); 
 // socket.on("countUpdate",(count)=>
 // {
 //     console.log("Count has been updated successfully!",count);
