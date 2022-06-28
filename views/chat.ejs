@@ -1,9 +1,15 @@
 <%- include('partials/header') %>
-<h1>Chat App</h1>
-<h2></h2>
+Chat App
+<h1></h1>
+<div id="messages"></div>
 <form>
     <input type="text" name="message">
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 <button id="sendLocation" class="btn btn-secondary">Know Your Locatiion</button>
+<scrpt id="message-template" type="text/html" style="visibility: hidden;">
+    <div>
+        <p>{{message}}</p>
+    </div>
+</scrpt>
 <%- include('partials/footer') %> 
