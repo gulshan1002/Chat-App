@@ -2,14 +2,19 @@ const socket = io();
 
 socket.on("message",(message)=>
 {
-    document.querySelector("h2").innerHTML = message;
+    // document.querySelector("h2").innerHTML = message;
+    console.log(message);
 });
 
 document.querySelector("form").addEventListener("submit", (e)=>
 {
     e.preventDefault();
     const message = document.querySelector("input").value;
-    socket.emit("sendMessage", message);
+    socket.emit("sendMessage", message,(acknowledgement)=>
+    {
+        //console.log("The message was delievered!");
+        console.log(acknowledgement);
+    });
 });
 document.querySelector("#sendLocation").addEventListener("click",(e)=>
 {
@@ -20,7 +25,10 @@ document.querySelector("#sendLocation").addEventListener("click",(e)=>
     navigator.geolocation.getCurrentPosition((position)=>
     {
         console.log(position);
-        socket.emit("sendLocation",{latitude:position.coords.latitude,longitude:position.coords.longitude});
+        socket.emit("sendLocation",{latitude:position.coords.latitude,longitude:position.coords.longitude},(acknowledgement)=>
+        {
+            console.log(acknowledgement);
+        });
     });
 }); 
 // socket.on("countUpdate",(count)=>

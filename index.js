@@ -1,4 +1,4 @@
-const { Socket } = require("dgram");
+const Filter = require("bad-words");
 const express = require("express");
 const http = require("http");
 const socketio = require("socket.io");
@@ -18,10 +18,15 @@ io.on("connection", (socket)=>
     console.log("New websocket Connection!");
     socket.emit("message","Welcome!");
     socket.broadcast.emit("message","A new User has Joined!");
-    socket.on("sendMessage", (data)=>
+    socket.on("sendMessage", (data,callback)=>
     {
-        //console.log(data);
+        const filter = new Filter();
+        if(filter.isProfane(data))
+        {
+            return callback("Profanity is not allowed!");
+        }
         io.emit("message", data);
+        callback("Message Delivered!");
     });
 
     // socket.emit("countUpdate",count);
@@ -36,9 +41,10 @@ io.on("connection", (socket)=>
             io.emit("message", "A user has left the chat!");
     });
 
-    socket.on("sendLocation",(location)=>
+    socket.on("sendLocation",(location, callback)=>
     {
         io.emit("message",`https://google.com/maps?q=${location.latitude},${location.longitude}`);
+        callback("Location shared Successfully!");
     });
 });
 
