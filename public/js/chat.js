@@ -7,12 +7,18 @@ const messages = document.querySelector("#messages");
 const socket = io();
 
 const messageTemplate = document.querySelector("#message-template").innerHTML;
+const locationTemplate = document.querySelector("#location-template").innerHTML; 
 
 socket.on("message",(message)=>
 {
     //document.querySelector("h1").innerHTML = message;
     console.log(message);
     const html = Mustache.render(messageTemplate,{message:message});
+    messages.insertAdjacentHTML("beforeend",html);
+});
+socket.on("locationMessage",(url)=>
+{
+    const html = Mustache.render(locationTemplate,{location:url});
     messages.insertAdjacentHTML("beforeend",html);
 });
 
