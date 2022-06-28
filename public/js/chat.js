@@ -2,7 +2,7 @@ const socket = io();
 
 socket.on("message",(message)=>
 {
-    document.querySelector("h1").innerHTML = message;
+    document.querySelector("h2").innerHTML = message;
 });
 
 document.querySelector("form").addEventListener("submit", (e)=>

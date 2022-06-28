@@ -17,7 +17,7 @@ io.on("connection", (socket)=>
 {
     console.log("New websocket Connection!");
     socket.emit("message","Welcome!");
-
+    socket.broadcast.emit("message","A new User has Joined!");
     socket.on("sendMessage", (data)=>
     {
         //console.log(data);
@@ -31,6 +31,10 @@ io.on("connection", (socket)=>
     //     //socket.emit("countUpdate",count);
     //     io.emit("countUpdate",count);
     // });
+    socket.on("disconnect",()=>
+    {
+            io.emit("message", "A user has left the chat!");
+    });
 });
 
 app.get("/", function(req, res)
