@@ -52,9 +52,12 @@ io.on("connection", (socket)=>
 
 app.get("/", function(req, res)
 {
+    res.render("index");
+});
+app.get("/chat",function(req,res)
+{
     res.render("chat");
 });
-
 
 
 server.listen(3000, function(err)
