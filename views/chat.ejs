@@ -1,20 +1,36 @@
 <%- include('partials/header') %>
-Chat App
-<h1></h1>
-<div id="messages"></div>
-<form>
-    <input type="text" name="message">
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-<button id="sendLocation" class="btn btn-secondary">Know Your Locatiion</button>
-<scrpt id="message-template" type="text/html" style="visibility: hidden;">
-    <div>
-        <p>{{message}}   {{createdAt}}</p>
+<div class="chat">
+    <div class="chat__sidebar">
+
+    </div>
+    <div class="chat__main">
+        <div id="messages" class="chat__messages"></div>
+        <div class="compose">
+            <form id="message-form">
+                <input type="text" name="message" placeholder="Message">
+                <button type="submit">Submit</button>
+            </form>
+            <button id="sendLocation">Know Your Location</button>
+        </div>
+    </div>
+</div>
+<scrpt id="message-template" type="text/html" hidden>
+    <div class="message">
+        <p style="margin-bottom: 0px;">
+            <span class="message__name">user name</span>
+            <span class="message__meta">{{createdAt}}</span>
+        </p>
+        <p style="margin-top: 0px;">{{message}}</p>
     </div>
 </scrpt>
-<script id="location-template" type="text/html" style="visibility: hidden;">
-    <div>
-        <p><a href={{location}} target="_blank">Know My Location</a>   {{createdAt}}</p>
+<script id="location-template" type="text/html" hidden>
+    <div class="message">
+        <p style="margin-bottom: 0px;">
+            <span class="message__name">user name</span>
+            <span class="message_meta">{{createdAt}}</span>
+        </p>
+        <p style="margin-top: 0px;"><a href={{location}} target="_blank">Know My Location</a></p>
+        
     </div>
 </script>
 <%- include('partials/footer') %> 
