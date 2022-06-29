@@ -3,6 +3,8 @@ const express = require("express");
 const http = require("http");
 const socketio = require("socket.io");
 
+const {generateMessage} = require("./utils/messages");
+
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
@@ -16,8 +18,8 @@ let count=0;
 io.on("connection", (socket)=>
 {
     console.log("New websocket Connection!");
-    socket.emit("message","Welcome!");
-    socket.broadcast.emit("message","A new User has Joined!");
+    socket.emit("message",generateMessage("Welcome!"));
+    socket.broadcast.emit("message",generateMessage("A new User has Joined!"));
     socket.on("sendMessage", (data,callback)=>
     {
         const filter = new Filter();
@@ -25,7 +27,7 @@ io.on("connection", (socket)=>
         {
             return callback("Profanity is not allowed!");
         }
-        io.emit("message", data);
+        io.emit("message", generateMessage(data));
         callback("Message Delivered!");
     });
 
@@ -38,12 +40,12 @@ io.on("connection", (socket)=>
     // });
     socket.on("disconnect",()=>
     {
-            io.emit("message", "A user has left the chat!");
+            io.emit("message", generateMessage("A user has left the chat!"));
     });
 
     socket.on("sendLocation",(location, callback)=>
     {
-        io.emit("locationMessage",`https://google.com/maps?q=${location.latitude},${location.longitude}`);
+        io.emit("locationMessage",generateMessage(`https://google.com/maps?q=${location.latitude},${location.longitude}`));
         callback("Location shared Successfully!");
     });
 });

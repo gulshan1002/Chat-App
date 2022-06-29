@@ -9,12 +9,12 @@ Chat App
 <button id="sendLocation" class="btn btn-secondary">Know Your Locatiion</button>
 <scrpt id="message-template" type="text/html" style="visibility: hidden;">
     <div>
-        <p>{{message}}</p>
+        <p>{{message}}   {{createdAt}}</p>
     </div>
 </scrpt>
 <script id="location-template" type="text/html" style="visibility: hidden;">
     <div>
-        <p><a href={{location}} target="_blank">Know My Location</a></p>
+        <p><a href={{location}} target="_blank">Know My Location</a>   {{createdAt}}</p>
     </div>
 </script>
 <%- include('partials/footer') %> 
