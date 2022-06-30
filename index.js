@@ -90,7 +90,7 @@ app.get("/chat",function(req,res)
 });
 
 
-server.listen(3000, function(err)
+server.listen(process.env.PORT|| 3000, function(err)
 {
     if(err)
     {
