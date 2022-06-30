@@ -4,7 +4,7 @@ const http = require("http");
 const socketio = require("socket.io");
 
 const {generateMessage} = require("./utils/messages");
-const {addUser,removeUser,getUser,getUserInRoom} = require("./utils/users");
+const {addUser,removeUser,getUser,getusersInRoom} = require("./utils/users");
 
 const app = express();
 const server = http.createServer(app);
@@ -32,6 +32,10 @@ io.on("connection", (socket)=>
         socket.join(user.room);
         socket.emit("message",generateMessage("Admin","Welcome!"));
         socket.broadcast.to(room).emit("message",generateMessage("Admin",`${user.username} has joined!`));
+        io.to(user.room).emit("roomData",{
+            room:user.room,
+            users:getusersInRoom(user.room)
+        });
         callback();
         // socket.emit(), io.emit(), socket.broadcast.emit()
         // io.to.emit(), socket.broadcast.emit()
@@ -61,6 +65,10 @@ io.on("connection", (socket)=>
         if(user)
         {
             io.to(user.room).emit("message", generateMessage("Admin",`${user.username} left`));
+            io.to(user.room).emit("roomData",{
+                room:user.room,
+                users:getusersInRoom(user.room)
+            });
         }
     });
 
