@@ -4,6 +4,7 @@ const http = require("http");
 const socketio = require("socket.io");
 
 const {generateMessage} = require("./utils/messages");
+const {addUser,removeUser,getUser,getUserInRoom} = require("./utils/users");
 
 const app = express();
 const server = http.createServer(app);
@@ -18,8 +19,18 @@ let count=0;
 io.on("connection", (socket)=>
 {
     console.log("New websocket Connection!");
-    socket.emit("message",generateMessage("Welcome!"));
-    socket.broadcast.emit("message",generateMessage("A new User has Joined!"));
+    // socket.emit("message",generateMessage("Welcome!"));
+    // socket.broadcast.emit("message",generateMessage("A new User has Joined!"));
+
+    socket.on("join",({username,room})=>
+    {
+        socket.join(room);
+        socket.emit("message",generateMessage("Welcome!"));
+        socket.broadcast.to(room).emit("message",generateMessage(`${username} has joined!`));
+
+        // socket.emit(), io.emit(), socket.broadcast.emit()
+        // io.to.emit(), socket.broadcast.emit()
+    });
     socket.on("sendMessage", (data,callback)=>
     {
         const filter = new Filter();
@@ -27,7 +38,7 @@ io.on("connection", (socket)=>
         {
             return callback("Profanity is not allowed!");
         }
-        io.emit("message", generateMessage(data));
+        io.to("1234").emit("message", generateMessage(data));
         callback("Message Delivered!");
     });
 

@@ -9,6 +9,8 @@ const socket = io();
 const messageTemplate = document.querySelector("#message-template").innerHTML;
 const locationTemplate = document.querySelector("#location-template").innerHTML; 
 
+const {username,room} = Qs.parse(location.search,{ignoreQueryPrefix: true});
+
 socket.on("message",(message)=>
 {
     //document.querySelector("h1").innerHTML = message;
@@ -53,6 +55,8 @@ sendLocationButton.addEventListener("click",(e)=>
         });
     });
 }); 
+
+socket.emit("join",{username,room});
 // socket.on("countUpdate",(count)=>
 // {
 //     console.log("Count has been updated successfully!",count);
