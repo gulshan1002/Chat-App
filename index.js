@@ -30,20 +30,21 @@ io.on("connection", (socket)=>
             return callback(error);
         }
         socket.join(user.room);
-        socket.emit("message",generateMessage("Welcome!"));
-        socket.broadcast.to(room).emit("message",generateMessage(`${user.username} has joined!`));
+        socket.emit("message",generateMessage("Admin","Welcome!"));
+        socket.broadcast.to(room).emit("message",generateMessage("Admin",`${user.username} has joined!`));
         callback();
         // socket.emit(), io.emit(), socket.broadcast.emit()
         // io.to.emit(), socket.broadcast.emit()
     });
     socket.on("sendMessage", (data,callback)=>
     {
+        const user = getUser(socket.id);
         const filter = new Filter();
         if(filter.isProfane(data))
         {
             return callback("Profanity is not allowed!");
         }
-        io.to("1234").emit("message", generateMessage(data));
+        io.to(user.room).emit("message", generateMessage(user.username,data));
         callback("Message Delivered!");
     });
 
@@ -59,13 +60,14 @@ io.on("connection", (socket)=>
         const user = removeUser(socket.id);
         if(user)
         {
-            io.to(user.room).emit("message", generateMessage(`${user.username} left`));
+            io.to(user.room).emit("message", generateMessage("Admin",`${user.username} left`));
         }
     });
 
     socket.on("sendLocation",(location, callback)=>
     {
-        io.emit("locationMessage",generateMessage(`https://google.com/maps?q=${location.latitude},${location.longitude}`));
+        const user = getUser(socket.id);
+        io.to(user.room).emit("locationMessage",generateMessage(user.username,`https://google.com/maps?q=${location.latitude},${location.longitude}`));
         callback("Location shared Successfully!");
     });
 });

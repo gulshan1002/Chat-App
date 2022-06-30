@@ -15,12 +15,12 @@ socket.on("message",(message)=>
 {
     //document.querySelector("h1").innerHTML = message;
     console.log(message.text);
-    const html = Mustache.render(messageTemplate,{message:message.text,createdAt:moment(message.createdAt).format('h:mm a')});
+    const html = Mustache.render(messageTemplate,{username:message.username,message:message.text,createdAt:moment(message.createdAt).format('h:mm a')});
     messages.insertAdjacentHTML("beforeend",html);
 });
 socket.on("locationMessage",(url)=>
 {
-    const html = Mustache.render(locationTemplate,{location:url.text,createdAt:moment(url.createdAt).format('h:mm a')});
+    const html = Mustache.render(locationTemplate,{username:url.username,location:url.text,createdAt:moment(url.createdAt).format('h:mm a')});
     messages.insertAdjacentHTML("beforeend",html);
 });
 
